@@ -10,16 +10,23 @@
 > > Eliot Levine
 >
 > 0 Years of experience
+> 
 > 2 Builders
 > 2 Coders
+> 
 > 2 Notebookers
+> 
 > 1 PR
+> 
 > No current sponsorshipps
+> 
 > Looking for alliance opportunities
 
 # Repo Contents:
 > Code
+> 
 > > Fully open source, built with Purdue Sigbots PROS
 >
 > Notbook history
+> 
 > > Formatted in .pptx
