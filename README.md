@@ -16,7 +16,10 @@
 >
 > 0 Years of experience
 > 
-> 2 Builders
+> 1 Builder
+>
+> 1 Designer
+> 
 > 2 Coders
 > 
 > 2 Notebookers
