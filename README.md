@@ -14,7 +14,7 @@
 > > 
 > > Eliot Levine
 >
-> 0 Years of experience
+> First year team
 > 
 > 1 Builder
 >
