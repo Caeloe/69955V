@@ -3,10 +3,15 @@
 
 # Team details:
 > 5 Team members:
+> 
 > > Maximus Chang
+> > 
 > > Yuntian Hao
+> > 
 > > Aaryan Jain
+> > 
 > > Teo Lee
+> > 
 > > Eliot Levine
 >
 > 0 Years of experience
