@@ -26,15 +26,4 @@
 > 
 > 1 PR
 > 
-> No current sponsorshipps
-> 
-> Looking for alliance opportunities
-
-# Repo Contents:
-> Code
-> 
-> > Fully open source, built with Purdue Sigbots PROS
->
-> Notbook history
-> 
-> > Formatted in .pptx
+> No current sponsorships
