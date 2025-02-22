@@ -129,9 +129,9 @@ void autonomous() {
   It is possible to get perfectly consistent results without tracking wheels,
   but it is also possible to have extremely inconsistent results without tracking wheels.
   When you don't use tracking wheels, you need to:
-   - avoid wheel slip
-   - avoid wheelies
-   - avoid throwing momentum around (super harsh turns, like in the example below)
+    - avoid wheel slip
+    - avoid wheelies
+    - avoid throwing momentum around (super harsh turns, like in the example below)
   You can do cool curved motions, but you have to give your robot the best chance
   to be consistent
   */
@@ -161,14 +161,16 @@ void ez_screen_task() {
   while (true) {
     // Only run this when not connected to a competition switch
     if (!pros::competition::is_connected()) {
-      // Blank page for odom debugging
+      /*
+      Commented out because we don't have odom
+
       if (chassis.odom_enabled() && !chassis.pid_tuner_enabled()) {
         // If we're on the first blank page...
         if (ez::as::page_blank_is_on(0)) {
           // Display X, Y, and Theta
           ez::screen_print("x: " + util::to_string_with_precision(chassis.odom_x_get()) +
-                               "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
-                               "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
+                              "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
+                              "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
                            1);  // Don't override the top Page line
 
           // Display all trackers that are being used
@@ -178,6 +180,7 @@ void ez_screen_task() {
           screen_print_tracker(chassis.odom_tracker_front, "f", 7);
         }
       }
+      */
     }
 
     // Remove all blank pages when connected to a comp switch
@@ -199,7 +202,7 @@ pros::Task ezScreenTask(ez_screen_task);
  * - gives you a GUI to change your PID values live by pressing X
  */
 
- 
+
 void ez_template_extras() {
   // Only run this when not connected to a competition switch
   if (!pros::competition::is_connected()) {
@@ -245,11 +248,6 @@ void ez_template_extras() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  // This is preference to what you like to drive on
-
-  //Commented out because I'm testing active brake
-  //chassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
-
   chassis.opcontrol_drive_activebrake_set(1.0);  // Sets the active brake kP. We recommend ~2.  0 will disable.  
 
   ladybrown.set_brake_mode_all(MOTOR_BRAKE_HOLD);
@@ -260,17 +258,10 @@ void opcontrol() {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
-    chassis.opcontrol_arcade_standard(ez::SPLIT);  // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
-    // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
-    // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
-    // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
-
-    // . . .
-    // Put more user control code here!
-    // . . .
+    chassis.opcontrol_arcade_standard(ez::SPLIT);
 
     if (master.get_digital(DIGITAL_L2)) {
+      // 80% power
       intake.move(102);
     }
     else if (master.get_digital(DIGITAL_R2)) {
