@@ -198,6 +198,8 @@ pros::Task ezScreenTask(ez_screen_task);
  *     is only enabled when you're not connected to competition control.
  * - gives you a GUI to change your PID values live by pressing X
  */
+
+ 
 void ez_template_extras() {
   // Only run this when not connected to a competition switch
   if (!pros::competition::is_connected()) {
@@ -248,13 +250,17 @@ void opcontrol() {
   //Commented out because I'm testing active brake
   //chassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
 
-  chassis.opcontrol_drive_activebrake_set(2.5);  // Sets the active brake kP. We recommend ~2.  0 will disable.  
+  chassis.opcontrol_drive_activebrake_set(1.0);  // Sets the active brake kP. We recommend ~2.  0 will disable.  
+
+  ladybrown.set_brake_mode_all(MOTOR_BRAKE_HOLD);
+
+  mogo.set(false);
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
-    chassis.opcontrol_arcade_standard(ez::SINGLE);  // Tank control
+    chassis.opcontrol_arcade_standard(ez::SPLIT);  // Tank control
     // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
@@ -265,26 +271,23 @@ void opcontrol() {
     // . . .
 
     if (master.get_digital(DIGITAL_L2)) {
-      intake.move(127);
+      intake.move(102);
     }
     else if (master.get_digital(DIGITAL_R2)) {
-      intake.move(-127);
+      intake.move(-102);
     }
     else {
       intake.move(0);
     }
 
-    if (master.get_digital(DIGITAL_L1)) {
-      mogo.set(true);
-    }
-    else if (master.get_digital(DIGITAL_R1)) {
-      mogo.set(false);
+    if (master.get_digital_new_press(DIGITAL_DOWN)) {
+      mogo.set(!mogo.get());
     }
 
-    if (master.get_digital(DIGITAL_X)) {
+    if (master.get_digital(DIGITAL_L1)) {
       ladybrown.move(40);
     }
-    else if (master.get_digital(DIGITAL_B)) {
+    else if (master.get_digital(DIGITAL_R1)) {
       ladybrown.move(-40);
     }
     else {
