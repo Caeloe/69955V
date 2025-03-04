@@ -48,9 +48,9 @@ void initialize() {
   // chassis.odom_tracker_left_set(&vert_tracker);
 
   // Configure your chassis controls
-  chassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
-  chassis.opcontrol_curve_default_set(0.0, 0.0);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
+  chassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
+  chassis.opcontrol_drive_activebrake_set(2.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
+  chassis.opcontrol_curve_default_set(2.0, 1.5);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
 
   // Set the drive to your own constants from autons.cpp!
   default_constants();
@@ -205,7 +205,7 @@ pros::Task ezScreenTask(ez_screen_task);
 
 void ez_template_extras() {
   // Only run this when not connected to a competition switch
-  if (!pros::competition::is_connected()) {
+  //if (!pros::competition::is_connected()) {
     // PID Tuner
     // - after you find values that you're happy with, you'll have to set them in auton.cpp
 
@@ -225,13 +225,15 @@ void ez_template_extras() {
 
     // Allow PID Tuner to iterate
     chassis.pid_tuner_iterate();
-  }
+  //}
 
   // Disable PID Tuner when connected to a comp switch
+  /*
   else {
     if (chassis.pid_tuner_enabled())
       chassis.pid_tuner_disable();
   }
+  */
 }
 
 /**
@@ -248,7 +250,7 @@ void ez_template_extras() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  chassis.opcontrol_drive_activebrake_set(1.0);  // Sets the active brake kP. We recommend ~2.  0 will disable.  
+  doinker.set_brake_mode(MOTOR_BRAKE_HOLD);
 
   ladybrown.set_brake_mode_all(MOTOR_BRAKE_HOLD);
 
@@ -261,28 +263,35 @@ void opcontrol() {
     chassis.opcontrol_arcade_standard(ez::SPLIT);
 
     if (master.get_digital(DIGITAL_L2)) {
-      // 80% power
-      intake.move(102);
+      // 60% power
+      intake.move(90);
     }
     else if (master.get_digital(DIGITAL_R2)) {
-      intake.move(-102);
+      intake.move(-90);
     }
     else {
       intake.move(0);
     }
 
-    if (master.get_digital_new_press(DIGITAL_DOWN)) {
+    if (master.get_digital_new_press(DIGITAL_RIGHT)) {
       mogo.set(!mogo.get());
     }
 
     if (master.get_digital(DIGITAL_L1)) {
-      ladybrown.move(40);
+      ladybrown.move(70);
     }
     else if (master.get_digital(DIGITAL_R1)) {
-      ladybrown.move(-40);
+      ladybrown.move(-70);
     }
     else {
       ladybrown.brake();
+    }
+
+    if (master.get_digital_new_press(DIGITAL_DOWN)) {
+      doinker.move(90);
+    }
+    else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+      doinker.move(-127);
     }
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME

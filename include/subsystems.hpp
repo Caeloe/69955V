@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EZ-Template/PID.hpp"
 #include "EZ-Template/api.hpp"
 #include "api.h"
 
@@ -10,3 +11,4 @@ extern Drive chassis;
 inline pros::Motor intake(20);
 inline ez::Piston mogo('H');
 inline pros::MotorGroup ladybrown({4, -5});
+inline pros::Motor doinker(10);
