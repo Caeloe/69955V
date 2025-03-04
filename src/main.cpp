@@ -1,7 +1,5 @@
 #include "main.h"
-#include "pros/misc.h"
-#include "pros/motors.h"
-#include "subsystems.hpp"
+#include "EZ-Template/util.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -14,7 +12,7 @@ ez::Drive chassis(
     {-1, -2},     // Left Chassis Ports (negative port will reverse it!)
     {8, 7},  // Right Chassis Ports (negative port will reverse it!)
 
-    11,      // IMU Port
+  11,      // IMU Port
     3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     300);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
@@ -129,9 +127,9 @@ void autonomous() {
   It is possible to get perfectly consistent results without tracking wheels,
   but it is also possible to have extremely inconsistent results without tracking wheels.
   When you don't use tracking wheels, you need to:
-    - avoid wheel slip
-    - avoid wheelies
-    - avoid throwing momentum around (super harsh turns, like in the example below)
+   - avoid wheel slip
+   - avoid wheelies
+   - avoid throwing momentum around (super harsh turns, like in the example below)
   You can do cool curved motions, but you have to give your robot the best chance
   to be consistent
   */
@@ -161,16 +159,14 @@ void ez_screen_task() {
   while (true) {
     // Only run this when not connected to a competition switch
     if (!pros::competition::is_connected()) {
-      /*
-      Commented out because we don't have odom
-
+      // Blank page for odom debugging
       if (chassis.odom_enabled() && !chassis.pid_tuner_enabled()) {
         // If we're on the first blank page...
         if (ez::as::page_blank_is_on(0)) {
           // Display X, Y, and Theta
           ez::screen_print("x: " + util::to_string_with_precision(chassis.odom_x_get()) +
-                              "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
-                              "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
+                               "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
+                               "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
                            1);  // Don't override the top Page line
 
           // Display all trackers that are being used
@@ -180,7 +176,6 @@ void ez_screen_task() {
           screen_print_tracker(chassis.odom_tracker_front, "f", 7);
         }
       }
-      */
     }
 
     // Remove all blank pages when connected to a comp switch
@@ -201,11 +196,9 @@ pros::Task ezScreenTask(ez_screen_task);
  *     is only enabled when you're not connected to competition control.
  * - gives you a GUI to change your PID values live by pressing X
  */
-
-
 void ez_template_extras() {
   // Only run this when not connected to a competition switch
-  //if (!pros::competition::is_connected()) {
+  if (!pros::competition::is_connected()) {
     // PID Tuner
     // - after you find values that you're happy with, you'll have to set them in auton.cpp
 
@@ -225,15 +218,13 @@ void ez_template_extras() {
 
     // Allow PID Tuner to iterate
     chassis.pid_tuner_iterate();
-  //}
+  }
 
   // Disable PID Tuner when connected to a comp switch
-  /*
   else {
     if (chassis.pid_tuner_enabled())
       chassis.pid_tuner_disable();
   }
-  */
 }
 
 /**
@@ -250,11 +241,8 @@ void ez_template_extras() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  doinker.set_brake_mode(MOTOR_BRAKE_HOLD);
-
-  ladybrown.set_brake_mode_all(MOTOR_BRAKE_HOLD);
-
-  mogo.set(false);
+  // This is preference to what you like to drive on
+  chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier

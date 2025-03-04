@@ -424,9 +424,8 @@
       }
     },
     "upload_options": {
-      "description": "Magpilots Main Code",
-      "icon": "power",
-      "after": "none"
+      "description": "Main Software for Team 69955V",
+      "icon": "X"
     },
     "use_early_access": false
   }
