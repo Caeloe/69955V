@@ -1,5 +1,9 @@
 #include "main.h"
 #include "EZ-Template/util.hpp"
+#include "autons.hpp"
+#include "pros/motors.h"
+#include "subsystems.hpp"
+#include "globals.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -47,7 +51,7 @@ void initialize() {
 
   // Configure your chassis controls
   chassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(2.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
+  chassis.opcontrol_drive_activebrake_set(1.25);   // Sets the active brake kP. We recommend ~2.  0 will disable.
   chassis.opcontrol_curve_default_set(2.0, 1.5);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
 
   // Set the drive to your own constants from autons.cpp!
@@ -59,6 +63,10 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+      {"Red Ring Rush", comp_red_rr},
+      {"Blue Ring Rush", comp_blue_rr},
+      {"Red Double Mogo\n\nPlaces mogo on alliance stake, then loads one onto two mogos.", comp_red_dm},
+      {"Blue Double Mogo", comp_blue_dm},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
@@ -243,6 +251,8 @@ void ez_template_extras() {
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
+  
+  pre_match_setup();
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
@@ -250,12 +260,12 @@ void opcontrol() {
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);
 
-    if (master.get_digital(DIGITAL_L2)) {
+    if (master.get_digital(DIGITAL_L2)) { 
       // 60% power
-      intake.move(90);
+      intake.move(97);
     }
     else if (master.get_digital(DIGITAL_R2)) {
-      intake.move(-90);
+      intake.move(-97);
     }
     else {
       intake.move(0);
@@ -266,20 +276,23 @@ void opcontrol() {
     }
 
     if (master.get_digital(DIGITAL_L1)) {
-      ladybrown.move(70);
+      ladybrown.move(80);
     }
     else if (master.get_digital(DIGITAL_R1)) {
-      ladybrown.move(-70);
+      ladybrown.move(-80);
     }
     else {
       ladybrown.brake();
     }
 
-    if (master.get_digital_new_press(DIGITAL_DOWN)) {
-      doinker.move(90);
+    if (master.get_digital(DIGITAL_DOWN)) {
+      doinker.move(65);
     }
-    else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-      doinker.move(-127);
+    else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+      doinker.move(-65);
+    }
+    else {
+      doinker.move(0);
     }
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME

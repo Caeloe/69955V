@@ -426,7 +426,7 @@
     "upload_options": {
       "description": "Main Software for Team 69955V",
       "icon": "X",
-      "after": "run"
+      "after": "screen"
     },
     "use_early_access": false
   }
